@@ -69,7 +69,7 @@ module.exports = function solveSudoku(matrix) {
     for ( let row = rowIndex ; row < ( rowIndex  + 3 ); row ++ ) {
       collumArray = matrix[ row ];
       for  ( let collum = collumIndex ; collum < (collumIndex + 3); collum ++ ) {
-            
+           
         array33.push(collumArray[ collum ])
 
       }
@@ -90,25 +90,31 @@ module.exports = function solveSudoku(matrix) {
   }
 
   while ( isCountZero(matrix) > 0 ) {
-  for (let rowMatrix = 0; rowMatrix < 9; rowMatrix++) {
-    let rowArray = resultMatrix[ rowMatrix ];
-    
-    for (let i = 0; i  < 9; i ++) {
-      if (rowArray[i] === 0){
-      rowArray.filter( function(e) {return e > 0 }) ;
-      let tempDIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-      let collumArray  = getCollumArray( resultMatrix, i);
-      let array33   = getArray33( resultMatrix, rowMatrix, i );
-      tempDIGITS    = searchElements( collumArray , tempDIGITS  );  
-      tempDIGITS    = searchElements( rowArray, tempDIGITS  );   
-      tempDIGITS    = searchElements( array33 , tempDIGITS  );
-            
-      if ( tempDIGITS.length === 1) {
-        resultMatrix[rowMatrix][i] = tempDIGITS[0];
-      }
-      }
-    }      
-  }  
+    for (let rowMatrix = 0; rowMatrix < 9; rowMatrix++) {
+      let rowArray = resultMatrix[ Math.floor(rowMatrix/3)  ];   
+      let rowArray1 = resultMatrix[ (Math.floor(rowMatrix/3) + 1) ];
+      let rowArray2 = resultMatrix[ (Math.floor(rowMatrix/3) + 2 )];
+
+      for (let i = 0; i  < 9; i ++) {
+        if (rowArray[i] === 0){
+          rowArray.filter( function(e) {return e > 0 }) ;
+          let tempDIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+          let collumArray  = getCollumArray( resultMatrix, i);
+          let array33   = getArray33( resultMatrix, rowMatrix, (Math.floor(i/3) + 1) );
+          let array331   = getArray33( resultMatrix, rowMatrix, (Math.floor(i/3) + 1) );
+          let array332   = getArray33( resultMatrix, rowMatrix, (Math.floor(i/3) + 1) );
+          tempDIGITS    = searchElements( collumArray, tempDIGITS );  
+          tempDIGITS    = searchElements( rowArray, tempDIGITS );   
+          tempDIGITS    = searchElements( rowArray1, tempDIGITS );  
+          tempDIGITS    = searchElements( rowArray2, tempDIGITS );  
+          tempDIGITS    = searchElements( array33, tempDIGITS );
+
+          if ( tempDIGITS.length === 1) {
+            resultMatrix[rowMatrix][i] = tempDIGITS[0];
+          }
+        }
+      }      
+    } 
   }
   return resultMatrix;
   // your solution
